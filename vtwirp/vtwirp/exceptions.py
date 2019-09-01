@@ -20,9 +20,23 @@ class TwirpServerException(httplib.HTTPException):
         self._meta = meta
         super(TwirpServerException, self).__init__(message)
 
+    @property
+    def code(self):
+        if isinstance(self._code, errors.Errors):
+            return self._code
+        return errors.Errors.Unknown
+
+    @property
+    def message(self):
+        return self._message
+
+    @property
+    def meta(self):
+        return self._meta
+
     def to_dict(self):
         err = {
-            "code": self._code,
+            "code": self._code.value,
             "msg": self._message,
             "meta": {}
         }
@@ -34,8 +48,7 @@ class TwirpServerException(httplib.HTTPException):
         return json.dumps(self.to_dict()).encode('utf-8')
 
     @staticmethod
-    def from_json_bytes(data):
-        err_dict = json.loads(data.decode('utf-8'))
+    def from_json(err_dict):
         return TwirpServerException(
             code=err_dict.get('code', errors.Errors.Unknown),
             message=err_dict.get('msg',''),

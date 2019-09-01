@@ -9,7 +9,7 @@ setup(name="vtwirp",
       packages=['vtwirp'],
       install_requires=[
             'ujson',
-            'vcontext'
+            'requests'
       ],
       test_requires=[
       ],

@@ -5,9 +5,9 @@ from google.protobuf import json_format
 from google.protobuf import symbol_database as _symbol_database
 
 
-from vcontext import context
+from vcontext.context import Context
 
-from . import service
+from . import server
 from . import exceptions
 from . import errors
 
@@ -17,15 +17,15 @@ Endpoint = namedtuple("Endpoint", ["name", "function", "input", "output"])
 
 
 class TwirpBaseApp(object):
-    def __init__(self, prefix="", ctx_class=None):
+    def __init__(self, *args, prefix="", ctx_class=None):
         self._prefix = prefix
         self._services = {}
         if ctx_class is None:
-            ctx_class = context.Context
-        assert issubclass(ctx_class, context.Context)
+            ctx_class = Context
+        assert issubclass(ctx_class, Context)
         self._ctx_class = ctx_class
 
-    def add_service(self, svc: service.TwirpService):
+    def add_service(self, svc: server.TwirpServer):
         self._services[self._prefix+svc.prefix] = svc
 
     def _get_endpoint(self, path):
@@ -36,11 +36,10 @@ class TwirpBaseApp(object):
                 message="not found"
             )
 
-        return svc.get_endpoint_methods(path[len(self._prefix):])
+        return svc.get_endpoint(path[len(self._prefix):])
 
     @staticmethod
-    def json_decoder(request, data_obj=None):
-        body = request.get_data(as_text=False)
+    def json_decoder(body, data_obj=None):
         data = data_obj()
         json_format.Parse(body, data)
         return data
@@ -53,11 +52,10 @@ class TwirpBaseApp(object):
                 message=("bad service response type " + str(type(value)) +
                  ", expecting: " + data_obj.DESCRIPTOR.full_name))
 
-        return json_format.MessageToJson(value, preserving_proto_field_name=True), ("Content-Type", "application/json")
+        return json_format.MessageToJson(value, preserving_proto_field_name=True).encode('utf-8'), {"Content-Type": "application/json"}
 
     @staticmethod
-    def proto_decoder(request, data_obj=None):
-        body = request.get_data(as_text=False)
+    def proto_decoder(body, data_obj=None):
         data = data_obj()
         data.ParseFromString(body)
         return data
@@ -70,7 +68,7 @@ class TwirpBaseApp(object):
                 message=("bad service response type " + str(type(value)) +
                  ", expecting: " + data_obj.DESCRIPTOR.full_name))
 
-        return value.SerializeToString(), ("Content-Type", "application/protobuf")
+        return value.SerializeToString(), {"Content-Type": "application/protobuf"}
 
     def _get_encoder_decoder(self, endpoint, headers):
         ctype = headers['content-type']

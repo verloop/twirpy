@@ -2,13 +2,11 @@ from . import exceptions
 from . import errors
 
 
-class TwirpService(object):
+class TwirpServer(object):
 
     def __init__(self, *args, service):
         self.service = service
         self._endpoints = {}
-        self._package_name = ""
-        self._service_name = ""
         self._prefix = ""
 
     @property

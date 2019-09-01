@@ -1,6 +1,7 @@
 import asyncio
 import functools
 import typing
+import traceback
 
 import ujson as json
 
@@ -45,18 +46,22 @@ class TwirpASGIApp(base.TwirpBaseApp):
             endpoint = self._get_endpoint(scope['path'])
 
             headers = {k.decode('utf-8'): v.decode('utf-8') for (k,v) in scope['headers']}
-            decoder, encoder = self._get_encoder_decoder(endpoint, headers)
-            body = await receive()
+            encoder, decoder = self._get_encoder_decoder(endpoint, headers)
+            raw_receive = await receive()
             # Todo: middlewares
-            request = decoder(body)
+            request = decoder(raw_receive.get('body'))
             if asyncio.iscoroutinefunction(endpoint.function):
                 response_data = await endpoint.function(ctx, request)
             else:
-                response_data = run_in_threadpool(endpoint.function, ctx, request)
-            
+                response_data = await run_in_threadpool(endpoint.function, ctx, request)
             body_bytes, headers = encoder(response_data)
             # Todo: middleware
-            await self._respond(send,200,headers,body_bytes)
+            await self._respond(
+                send=send,
+                status=200,
+                headers=headers,
+                body_bytes=body_bytes
+            )
         except Exception as e:
             await self.handle_error(ctx, e, scope, receive, send)
 
@@ -68,6 +73,10 @@ class TwirpASGIApp(base.TwirpBaseApp):
 
         try:
             if not isinstance(exc, exceptions.TwirpServerException):
+                # Todo: remove this and use logger here
+                print(exc)
+                traceback.print_exc()
+
                 exc = exceptions.TwirpServerException(
                     code=errors.Errors.Internal,
                     message= "Internal non-Twirp Error"
@@ -83,11 +92,16 @@ class TwirpASGIApp(base.TwirpBaseApp):
             body_bytes = exc.to_json_bytes()
 
         # todo: middlewares
-        await self._respond(send,status,{'Content-Type':'application/json'},body_bytes)
+        await self._respond(
+            send=send,
+            status=status,
+            headers={'Content-Type':'application/json'},
+            body_bytes=body_bytes
+            )
 
-    async def _respond(self, send, status, headers, body_bytes):
-        headers['Content-Length'] = str(len(body_bytes)).encode('utf-8')
-        resp_headers = [{k.encode('utf-8'):v.encode('utf-8')} for (k,v) in headers.items()]
+    async def _respond(self, *args, send, status, headers, body_bytes):
+        headers['Content-Length'] = str(len(body_bytes))
+        resp_headers = [(k.encode('utf-8'),v.encode('utf-8')) for (k,v) in headers.items()]
         await send({
                 'type': 'http.response.start',
                 'status': status,
