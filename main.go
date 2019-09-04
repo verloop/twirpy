@@ -99,10 +99,11 @@ func GenerateTwirpFile(fd *descriptor.FileDescriptorProto) (*plugin.CodeGenerato
 			})
 
 			twirpMethod := &templates.TwirpMethod{
-				ServiceURL: svcURL,
-				Name:       method.GetName(),
-				Input:      inputObject,
-				Output:     outputObject,
+				ServiceURL:  svcURL,
+				ServiceName: twirpSvc.Name,
+				Name:        method.GetName(),
+				Input:       inputObject,
+				Output:      outputObject,
 			}
 
 			twirpSvc.Methods = append(twirpSvc.Methods, twirpMethod)

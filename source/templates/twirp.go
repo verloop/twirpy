@@ -16,11 +16,12 @@ type TwirpService struct {
 }
 
 type TwirpMethod struct {
-	ServiceURL string
-	Name       string
-	Comment    string
-	Input      string
-	Output     string
+	ServiceURL  string
+	ServiceName string
+	Name        string
+	Comment     string
+	Input       string
+	Output      string
 }
 
 type TwirpImport struct {
@@ -47,6 +48,7 @@ class {{.Name}}Server(TwirpServer):
 		self._prefix = "/twirp/{{.ServiceURL}}"
 		self._endpoints = { {{- range .Methods }}
 			"{{.Name}}": Endpoint(
+				service_name="{{.ServiceName}}",
 				name="{{.Name}}",
 				function=getattr(service, "{{.Name}}"),
 				input={{.Input}},
