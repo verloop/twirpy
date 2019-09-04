@@ -1,15 +1,16 @@
 from setuptools import setup
 
 setup(name="vtwirp",
-      version="0.0.1",
+      version="0.0.2",
       description="Verloop twirp server",
       author="Piyush",
       author_email="piyush@verloop.io",
       licesnse='unlicense',
-      packages=['vtwirp'],
+      packages=['vtwirp','vtwirp.hooks'],
       install_requires=[
             'ujson',
             'requests'
+            'verloopcontext'
       ],
       test_requires=[
       ],

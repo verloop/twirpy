@@ -54,3 +54,18 @@ class TwirpServerException(httplib.HTTPException):
             message=err_dict.get('msg',''),
             meta=err_dict.get('meta',{}),
         )
+
+def InvalidArgument(*args, argument, error):
+    return TwirpServerException(
+        code=errors.Errors.InvalidArgument,
+        message="{} {}".format(argument, error),
+        meta={
+            "argument":argument
+        }
+    )
+
+def RequiredArgument(*args, argument):
+    return InvalidArgument(
+        argument=argument,
+        error="is required"
+    )

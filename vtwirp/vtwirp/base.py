@@ -5,25 +5,31 @@ from google.protobuf import json_format
 from google.protobuf import symbol_database as _symbol_database
 
 
-from vcontext.context import Context
+from verloopcontext.context import Context
 
 from . import server
 from . import exceptions
 from . import errors
+from . import hook as vtwirp_hook
 
 _sym_lookup = _symbol_database.Default().GetSymbol
 
-Endpoint = namedtuple("Endpoint", ["name", "function", "input", "output"])
+Endpoint = namedtuple("Endpoint", ["service_name", "name", "function", "input", "output"])
 
 
 class TwirpBaseApp(object):
-    def __init__(self, *args, prefix="", ctx_class=None):
+    def __init__(self, *middlewares, hook=None, prefix="", ctx_class=None):
         self._prefix = prefix
         self._services = {}
         if ctx_class is None:
             ctx_class = Context
         assert issubclass(ctx_class, Context)
         self._ctx_class = ctx_class
+        self._middlewares = middlewares
+        if hook is None:
+            hook = vtwirp_hook.TwirpHook()
+        assert isinstance(hook, vtwirp_hook.TwirpHook)
+        self._hook = hook
 
     def add_service(self, svc: server.TwirpServer):
         self._services[self._prefix+svc.prefix] = svc
@@ -71,7 +77,7 @@ class TwirpBaseApp(object):
         return value.SerializeToString(), {"Content-Type": "application/protobuf"}
 
     def _get_encoder_decoder(self, endpoint, headers):
-        ctype = headers['content-type']
+        ctype = headers.get('content-type', None)
         if "application/json" == ctype:
             decoder = functools.partial(self.json_decoder, data_obj=endpoint.input)
             encoder = functools.partial(self.json_encoder, data_obj=endpoint.output)
