@@ -13,7 +13,7 @@ import (
 	"github.com/golang/protobuf/proto"
 	"github.com/golang/protobuf/protoc-gen-go/descriptor"
 	plugin "github.com/golang/protobuf/protoc-gen-go/plugin"
-	"github.com/verloop/protoc-gen-python-verloop/source/templates"
+	"github.com/verloop/vtwirp/protoc-gen-python-verloop/source/templates"
 )
 
 func main() {
