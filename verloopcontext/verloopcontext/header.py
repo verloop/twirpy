@@ -7,6 +7,10 @@ class Headers(dict):
     def set_header(self, key, value):
         """
         Sets the header with given value
+
+        Arguments:
+        key: Key for the header.
+        value: Value for the header.
         """
         dict.__setitem__(self, key, value)
 

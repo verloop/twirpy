@@ -11,6 +11,9 @@ _configured = False
 def configure(force = False):
     """
     Configures logging & structlog modules
+
+    Keyword Arguments:
+    force: Force to reconfigure logging.
     """
 
     global _configured
