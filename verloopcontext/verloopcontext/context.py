@@ -1,5 +1,4 @@
 from . import logging
-from . import header
 
 
 class Context(object):
@@ -18,7 +17,7 @@ class Context(object):
             logger = logging.get_logger()
         self._logger = logger
         if headers is None:
-            headers = header.Headers()
+            headers = {}
         self._headers = headers
 
     def set(self, key, value):
@@ -61,4 +60,4 @@ class Context(object):
         key: Key for the header.
         value: Value for the header.
         """
-        self._headers.set_header(key, value)
+        self._headers[key] = value
