@@ -6,7 +6,7 @@ setup(name="vtwirp",
       author="Piyush",
       author_email="piyush@verloop.io",
       licesnse='unlicense',
-      packages=['vtwirp','vtwirp.hooks'],
+      packages=['vtwirp'],
       install_requires=[
             'ujson',
             'requests',
