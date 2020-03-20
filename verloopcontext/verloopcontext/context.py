@@ -27,9 +27,6 @@ class Context(object):
     def get_headers(self):
         return self._headers
 
-    def set_client_id(self, client_id):
-        return self._headers.set_client_id(client_id)
+    def set_header(self, key, value):
+        self._headers.set_header(key, value)
 
-    @property
-    def client_id(self):
-        return self._headers.client_id
