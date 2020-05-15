@@ -79,6 +79,6 @@ except TwirpServerException as e:
 
 
 ## Support and community
-Python community slack channel [#twirp](https://python-community.slack.com/messages/twirp). [Join Python community](https://pythoncommunity.herokuapp.com)
+Python: [#twirp](https://python-community.slack.com/messages/twirp). Join Python community slack [here](https://pythoncommunity.herokuapp.com)
 
-Gophers slack channel [#twirp](https://gophers.slack.com/messages/twirp). [Join Gophers community](https://invite.slack.golangbridge.org)
+Go: [#twirp](https://gophers.slack.com/messages/twirp). Join Gophers community slack [here](https://invite.slack.golangbridge.org)
