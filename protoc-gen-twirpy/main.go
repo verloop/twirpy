@@ -13,7 +13,7 @@ import (
 	"github.com/golang/protobuf/proto"
 	"github.com/golang/protobuf/protoc-gen-go/descriptor"
 	plugin "github.com/golang/protobuf/protoc-gen-go/plugin"
-	"github.com/verloop/vtwirp/protoc-gen-python-verloop/source/templates"
+	"github.com/verloop/twirpy/protoc-gen-twirpy/source/templates"
 )
 
 func main() {
@@ -118,7 +118,7 @@ func GenerateTwirpFile(fd *descriptor.FileDescriptorProto) (*plugin.CodeGenerato
 	}
 
 	resp := &plugin.CodeGeneratorResponse_File{
-		Name:    proto.String(strings.TrimSuffix(name, path.Ext(name)) + "_twirp_vrlp.py"),
+		Name:    proto.String(strings.TrimSuffix(name, path.Ext(name)) + "_twirp.py"),
 		Content: proto.String(buf.String()),
 	}
 

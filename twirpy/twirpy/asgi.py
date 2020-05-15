@@ -3,7 +3,10 @@ import functools
 import typing
 import traceback
 
-import ujson as json
+try:
+    import ujson as json
+except:
+    import json
 
 from . import base
 from . import exceptions
