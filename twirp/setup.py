@@ -1,10 +1,10 @@
 from setuptools import setup
 
-setup(name="twirpy",
+setup(name="twirp",
       version="0.0.1",
       description="Twirp server and client libs",
       licesnse='unlicense',
-      packages=['twirpy'],
+      packages=['twirp'],
       install_requires=[
             'requests',
             'structlog',
