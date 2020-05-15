@@ -8,18 +8,20 @@ For details about the twirp project, check https://github.com/twitchtv/twirp
 
 ## Installation
 
-Grab the protoc plugin with
+Grab the protoc plugin to generate files with
 
 ```
 go get -u github.com/verloop/twirpy/protoc-gen-twirpy
 ```
 
-To add the twirp package to your project
+Add the twirp package to your project
 ```
 pip install twirp
 ```
 
-## Usage
+You'll also need [uvicorn](https://www.uvicorn.org/) to run the server.
+
+## Generate and run
 Use the protoc plugin to generate twirp server and client code.
 
 We'll assume familiarity with the example from the docs. https://twitchtv.github.io/twirp/docs/example.html
@@ -41,7 +43,7 @@ from . import haberdasher_twirp, haberdasher_pb2
 class HaberdasherService(object):
     def MakeHat(self, context, size):
         if size.inches <= 0:
-            raise InvalidArgument("inches", "I can't make a hat that small!")
+            raise InvalidArgument(argument="inches", error="I can't make a hat that small!")
         return haberdasher_pb2.Hat(
             inches=size.inches,
             color= random.choice(["white", "black", "brown", "red", "blue"]),
