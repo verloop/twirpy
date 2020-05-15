@@ -1,2 +1,2 @@
-# protoc-gen-python-verloop
-twirp and vcontext support for python
+# protoc-gen-twirpy
+twirp support for python
