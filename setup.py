@@ -1,6 +1,6 @@
 from setuptools import setup
 
-with open('version.txt') as f:
+with open('VERSION') as f:
     version = f.read().strip()
 
 setup(name="twirp",
