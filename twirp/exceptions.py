@@ -4,7 +4,10 @@ try:
 except ImportError:
     import httplib
 
-import ujson as json
+try:
+    import ujson as json
+except:
+    import json
 
 from . import errors
 
