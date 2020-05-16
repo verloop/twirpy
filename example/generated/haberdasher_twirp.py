@@ -6,8 +6,8 @@ from twirp.base import Endpoint
 from twirp.server import TwirpServer
 from twirp.client import TwirpClient
 
-from haberdasher_pb2 import Size
-from haberdasher_pb2 import Hat
+from .haberdasher_pb2 import Size
+from .haberdasher_pb2 import Hat
 
 
 class HaberdasherServer(TwirpServer):
@@ -31,7 +31,7 @@ class HaberdasherClient(TwirpClient):
 		return self._make_request(
 			url="/twirp/haberdasher.Haberdasher/MakeHat",
 			ctx=ctx,
-			request=request, 
+			request=request,
 			response_obj=Hat,
 			**kwargs,
 		)
