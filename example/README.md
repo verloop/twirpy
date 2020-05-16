@@ -2,12 +2,11 @@
 
 ## Requirements
 You can install requirements for running the examples using `pip` :
-`pip install requirements.txt`
+`pip install -r requirements.txt`
 
 ## Running server
-You can run the Twirpy ASGI application using servers such as uvicorn  
-Installing uvicorn : `pip install uvicorn`  
-Example uvicorn command : `uvicorn --port 3000 example.server:app`
+You can run the Twirpy ASGI application using servers such as uvicorn.
+Example uvicorn command : `uvicorn --port 3000 server:app`
 
 ## Running client
 After server has started, you can make request using the example client with the following command :
