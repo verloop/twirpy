@@ -45,7 +45,7 @@ class HaberdasherService(object):
         if size.inches <= 0:
             raise InvalidArgument(argument="inches", error="I can't make a hat that small!")
         return haberdasher_pb2.Hat(
-            inches=size.inches,
+            size=size.inches,
             color= random.choice(["white", "black", "brown", "red", "blue"]),
             name=random.choice(["bowler", "baseball cap", "top hat", "derby"])
         )
