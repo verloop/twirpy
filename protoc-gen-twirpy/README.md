@@ -3,12 +3,10 @@ twirp support for python
 
 # Installing and using plugin
 1. Make sure your [GO](https://golang.org/) environment, [Protobuf](https://github.com/protocolbuffers/protobuf) compiler is properly setup.
-2. Go to Protobuf plugin directory : `cd ../protoc-gen-twirpy`
-3. Get dependencies : `go get .`
-4. Build the plugin : `go build main.go`  
-This will build the plugin and a copy of it will be available in `$GOBIN` directory which is usually `$GOPATH/bin`
-5. Change back to examples directory : `cd ../example`
-6. Generate code for `haberdasher.proto` using twirpy plugin :  
+2. Get dependencies : `go get .`
+3. Install the plugin : `go install`  
+This will build the plugin and will be available at `$GOBIN` directory which is usually `$GOPATH/bin`
+4. Generate code for `haberdasher.proto` using twirpy plugin :  
 `protoc --plugin=protoc-gen-twirpy --python_out=./ --twirpy_out=./ haberdasher.proto`  
   - plugin : It tells protoc which all plugins to use
   - python_out : The directory where generated Protobuf Python code needs to be saved.
