@@ -13,6 +13,7 @@ import (
 	"github.com/golang/protobuf/proto"
 	"github.com/golang/protobuf/protoc-gen-go/descriptor"
 	plugin "github.com/golang/protobuf/protoc-gen-go/plugin"
+
 	"github.com/verloop/twirpy/protoc-gen-twirpy/source/templates"
 )
 
@@ -130,9 +131,9 @@ func getImportAndObject(name string) (string, string) {
 	paths := strings.Split(name, ".")
 	var importPath string
 	importSuffix := "_pb2"
-	if len(paths) ==2 {
+	if len(paths) == 2 {
 		importPath = "." + paths[0] + importSuffix
-	}	else {
+	} else {
 		importPath = strings.Join(paths[:len(paths)-1], ".") + importSuffix
 	}
 	return importPath, paths[len(paths)-1]
