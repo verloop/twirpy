@@ -13,6 +13,7 @@ import (
 	"github.com/golang/protobuf/proto"
 	"github.com/golang/protobuf/protoc-gen-go/descriptor"
 	plugin "github.com/golang/protobuf/protoc-gen-go/plugin"
+
 	"github.com/verloop/twirpy/protoc-gen-twirpy/source/templates"
 )
 
@@ -128,7 +129,13 @@ func GenerateTwirpFile(fd *descriptor.FileDescriptorProto) (*plugin.CodeGenerato
 func getImportAndObject(name string) (string, string) {
 	name = strings.TrimPrefix(name, ".")
 	paths := strings.Split(name, ".")
-	importPath := strings.Join(paths[:len(paths)-1], ".") + "_pb2"
+	var importPath string
+	importSuffix := "_pb2"
+	if len(paths) ==2 {
+		importPath = "." + paths[0] + importSuffix
+	}	else {
+		importPath = strings.Join(paths[:len(paths)-1], ".") + importSuffix
+	}
 	return importPath, paths[len(paths)-1]
 }
 

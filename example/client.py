@@ -1,7 +1,7 @@
 from twirp.context import Context
 from twirp.exceptions import TwirpServerException
 
-from . import haberdasher_twirp, haberdasher_pb2
+from generated import haberdasher_twirp, haberdasher_pb2
 
 client = haberdasher_twirp.HaberdasherClient("http://localhost:3000")
 

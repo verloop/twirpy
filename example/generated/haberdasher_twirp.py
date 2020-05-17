@@ -6,15 +6,15 @@ from twirp.base import Endpoint
 from twirp.server import TwirpServer
 from twirp.client import TwirpClient
 
-from haberdasher_pb2 import Size
-from haberdasher_pb2 import Hat
+from .haberdasher_pb2 import Size
+from .haberdasher_pb2 import Hat
 
 
 class HaberdasherServer(TwirpServer):
 
 	def __init__(self, *args, service):
 		super().__init__(service=service)
-		self._prefix = "/twirp/haberdasher.Haberdasher"
+		self._prefix = "/twirp/twirp.services.haberdasher.Haberdasher"
 		self._endpoints = {
 			"MakeHat": Endpoint(
 				service_name="Haberdasher",
@@ -29,7 +29,7 @@ class HaberdasherClient(TwirpClient):
 
 	def MakeHat(self, *args, ctx, request, **kwargs):
 		return self._make_request(
-			url="/twirp/haberdasher.Haberdasher/MakeHat",
+			url="/twirp/twirp.services.haberdasher.Haberdasher/MakeHat",
 			ctx=ctx,
 			request=request, 
 			response_obj=Hat,
