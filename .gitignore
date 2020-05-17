@@ -115,3 +115,6 @@ venv.bak/
 
 # Output of the go coverage tool, specifically when used with LiteIDE
 *.out
+
+# the go binary
+protoc-gen-python-verloop/protoc-gen-twirpy
