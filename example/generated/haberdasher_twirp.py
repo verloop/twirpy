@@ -14,7 +14,7 @@ class HaberdasherServer(TwirpServer):
 
 	def __init__(self, *args, service):
 		super().__init__(service=service)
-		self._prefix = "/twirp/haberdasher.Haberdasher"
+		self._prefix = "/twirp/twirp.services.haberdasher.Haberdasher"
 		self._endpoints = {
 			"MakeHat": Endpoint(
 				service_name="Haberdasher",
@@ -29,9 +29,9 @@ class HaberdasherClient(TwirpClient):
 
 	def MakeHat(self, *args, ctx, request, **kwargs):
 		return self._make_request(
-			url="/twirp/haberdasher.Haberdasher/MakeHat",
+			url="/twirp/twirp.services.haberdasher.Haberdasher/MakeHat",
 			ctx=ctx,
-			request=request,
+			request=request, 
 			response_obj=Hat,
 			**kwargs,
 		)

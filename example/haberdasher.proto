@@ -1,6 +1,6 @@
 syntax = "proto3";
 
-package haberdasher;
+package twirp.services.haberdasher;
 
 // A Hat is a piece of headwear made by a Haberdasher.
 message Hat {
