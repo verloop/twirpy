@@ -1,6 +1,6 @@
 # Twirpy
 
-Python implementation of twirp RPC framework.
+Python implementation of Twirp RPC framework.
 
 This repo contains a protoc plugin that generates sever and client code and a pypi package with common implementation details.
 
