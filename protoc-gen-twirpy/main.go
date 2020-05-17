@@ -128,7 +128,7 @@ func GenerateTwirpFile(fd *descriptor.FileDescriptorProto) (*plugin.CodeGenerato
 func getImportAndObject(name string) (string, string) {
 	name = strings.TrimPrefix(name, ".")
 	paths := strings.Split(name, ".")
-	importPath := strings.Join(paths[:len(paths)-1], ".") + "_pb2"
+	importPath := "." + strings.Join(paths[:len(paths)-1], ".") + "_pb2"
 	return importPath, paths[len(paths)-1]
 }
 
