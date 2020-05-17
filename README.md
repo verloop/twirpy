@@ -27,7 +27,7 @@ Use the protoc plugin to generate twirp server and client code.
 We'll assume familiarity with the example from the docs. https://twitchtv.github.io/twirp/docs/example.html
 
 ```
-protoc --twirpy_out=./ ./haberdasher.proto
+protoc --python_out=./ --twirpy_out=./ ./haberdasher.proto
 ```
 
 ### Server code
