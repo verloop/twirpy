@@ -125,5 +125,5 @@ func getFileDescriptor(files []*descriptor.FileDescriptorProto, name string) (*d
 			return f, nil
 		}
 	}
-	return nil, errors.New("Could not find descriptor")
+	return nil, errors.New("could not find descriptor")
 }
