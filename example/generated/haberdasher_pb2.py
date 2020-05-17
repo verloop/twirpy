@@ -17,10 +17,10 @@ _sym_db = _symbol_database.Default()
 
 DESCRIPTOR = _descriptor.FileDescriptor(
   name='haberdasher.proto',
-  package='twirp.services.haberdasher',
+  package='twitch.twirp.example',
   syntax='proto3',
-  serialized_options=None,
-  serialized_pb=_b('\n\x11haberdasher.proto\x12\x1atwirp.services.haberdasher\"0\n\x03Hat\x12\x0c\n\x04size\x18\x01 \x01(\x05\x12\r\n\x05\x63olor\x18\x02 \x01(\t\x12\x0c\n\x04name\x18\x03 \x01(\t\"\x16\n\x04Size\x12\x0e\n\x06inches\x18\x01 \x01(\x05\x32[\n\x0bHaberdasher\x12L\n\x07MakeHat\x12 .twirp.services.haberdasher.Size\x1a\x1f.twirp.services.haberdasher.Hatb\x06proto3')
+  serialized_options=_b('Z\007example'),
+  serialized_pb=_b('\n\x11haberdasher.proto\x12\x14twitch.twirp.example\"0\n\x03Hat\x12\x0c\n\x04size\x18\x01 \x01(\x05\x12\r\n\x05\x63olor\x18\x02 \x01(\t\x12\x0c\n\x04name\x18\x03 \x01(\t\"\x16\n\x04Size\x12\x0e\n\x06inches\x18\x01 \x01(\x05\x32O\n\x0bHaberdasher\x12@\n\x07MakeHat\x12\x1a.twitch.twirp.example.Size\x1a\x19.twitch.twirp.example.HatB\tZ\x07\x65xampleb\x06proto3')
 )
 
 
@@ -28,27 +28,27 @@ DESCRIPTOR = _descriptor.FileDescriptor(
 
 _HAT = _descriptor.Descriptor(
   name='Hat',
-  full_name='twirp.services.haberdasher.Hat',
+  full_name='twitch.twirp.example.Hat',
   filename=None,
   file=DESCRIPTOR,
   containing_type=None,
   fields=[
     _descriptor.FieldDescriptor(
-      name='size', full_name='twirp.services.haberdasher.Hat.size', index=0,
+      name='size', full_name='twitch.twirp.example.Hat.size', index=0,
       number=1, type=5, cpp_type=1, label=1,
       has_default_value=False, default_value=0,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       serialized_options=None, file=DESCRIPTOR),
     _descriptor.FieldDescriptor(
-      name='color', full_name='twirp.services.haberdasher.Hat.color', index=1,
+      name='color', full_name='twitch.twirp.example.Hat.color', index=1,
       number=2, type=9, cpp_type=9, label=1,
       has_default_value=False, default_value=_b("").decode('utf-8'),
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       serialized_options=None, file=DESCRIPTOR),
     _descriptor.FieldDescriptor(
-      name='name', full_name='twirp.services.haberdasher.Hat.name', index=2,
+      name='name', full_name='twitch.twirp.example.Hat.name', index=2,
       number=3, type=9, cpp_type=9, label=1,
       has_default_value=False, default_value=_b("").decode('utf-8'),
       message_type=None, enum_type=None, containing_type=None,
@@ -66,20 +66,20 @@ _HAT = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=49,
-  serialized_end=97,
+  serialized_start=43,
+  serialized_end=91,
 )
 
 
 _SIZE = _descriptor.Descriptor(
   name='Size',
-  full_name='twirp.services.haberdasher.Size',
+  full_name='twitch.twirp.example.Size',
   filename=None,
   file=DESCRIPTOR,
   containing_type=None,
   fields=[
     _descriptor.FieldDescriptor(
-      name='inches', full_name='twirp.services.haberdasher.Size.inches', index=0,
+      name='inches', full_name='twitch.twirp.example.Size.inches', index=0,
       number=1, type=5, cpp_type=1, label=1,
       has_default_value=False, default_value=0,
       message_type=None, enum_type=None, containing_type=None,
@@ -97,8 +97,8 @@ _SIZE = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=99,
-  serialized_end=121,
+  serialized_start=93,
+  serialized_end=115,
 )
 
 DESCRIPTOR.message_types_by_name['Hat'] = _HAT
@@ -108,31 +108,32 @@ _sym_db.RegisterFileDescriptor(DESCRIPTOR)
 Hat = _reflection.GeneratedProtocolMessageType('Hat', (_message.Message,), dict(
   DESCRIPTOR = _HAT,
   __module__ = 'haberdasher_pb2'
-  # @@protoc_insertion_point(class_scope:twirp.services.haberdasher.Hat)
+  # @@protoc_insertion_point(class_scope:twitch.twirp.example.Hat)
   ))
 _sym_db.RegisterMessage(Hat)
 
 Size = _reflection.GeneratedProtocolMessageType('Size', (_message.Message,), dict(
   DESCRIPTOR = _SIZE,
   __module__ = 'haberdasher_pb2'
-  # @@protoc_insertion_point(class_scope:twirp.services.haberdasher.Size)
+  # @@protoc_insertion_point(class_scope:twitch.twirp.example.Size)
   ))
 _sym_db.RegisterMessage(Size)
 
 
+DESCRIPTOR._options = None
 
 _HABERDASHER = _descriptor.ServiceDescriptor(
   name='Haberdasher',
-  full_name='twirp.services.haberdasher.Haberdasher',
+  full_name='twitch.twirp.example.Haberdasher',
   file=DESCRIPTOR,
   index=0,
   serialized_options=None,
-  serialized_start=123,
-  serialized_end=214,
+  serialized_start=117,
+  serialized_end=196,
   methods=[
   _descriptor.MethodDescriptor(
     name='MakeHat',
-    full_name='twirp.services.haberdasher.Haberdasher.MakeHat',
+    full_name='twitch.twirp.example.Haberdasher.MakeHat',
     index=0,
     containing_service=None,
     input_type=_SIZE,

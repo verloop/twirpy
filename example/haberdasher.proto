@@ -1,6 +1,8 @@
+// Copied from https://github.com/twitchtv/twirp/blob/v5.10.2/example/service.proto
 syntax = "proto3";
 
-package twirp.services.haberdasher;
+package twitch.twirp.example;
+option go_package = "example";
 
 // A Hat is a piece of headwear made by a Haberdasher.
 message Hat {

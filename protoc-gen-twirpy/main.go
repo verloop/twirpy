@@ -87,24 +87,12 @@ func GenerateTwirpFile(fd *descriptor.FileDescriptorProto) (*plugin.CodeGenerato
 		}
 
 		for _, method := range svc.GetMethod() {
-			inputImport, inputObject := getImportAndObject(method.GetInputType())
-			vars.Imports = append(vars.Imports, &templates.TwirpImport{
-				From:   inputImport,
-				Import: inputObject,
-			})
-
-			outputImport, outputObject := getImportAndObject(method.GetOutputType())
-			vars.Imports = append(vars.Imports, &templates.TwirpImport{
-				From:   outputImport,
-				Import: outputObject,
-			})
-
 			twirpMethod := &templates.TwirpMethod{
 				ServiceURL:  svcURL,
 				ServiceName: twirpSvc.Name,
 				Name:        method.GetName(),
-				Input:       inputObject,
-				Output:      outputObject,
+				Input:       getSymbol(method.GetInputType()),
+				Output:      getSymbol(method.GetOutputType()),
 			}
 
 			twirpSvc.Methods = append(twirpSvc.Methods, twirpMethod)
@@ -126,17 +114,8 @@ func GenerateTwirpFile(fd *descriptor.FileDescriptorProto) (*plugin.CodeGenerato
 	return resp, nil
 }
 
-func getImportAndObject(name string) (string, string) {
-	name = strings.TrimPrefix(name, ".")
-	paths := strings.Split(name, ".")
-	var importPath string
-	importSuffix := "_pb2"
-	if len(paths) ==2 {
-		importPath = "." + paths[0] + importSuffix
-	}	else {
-		importPath = strings.Join(paths[:len(paths)-1], ".") + importSuffix
-	}
-	return importPath, paths[len(paths)-1]
+func getSymbol(name string) string {
+	return strings.TrimPrefix(name, ".")
 }
 
 func getFileDescriptor(files []*descriptor.FileDescriptorProto, name string) (*descriptor.FileDescriptorProto, error) {
