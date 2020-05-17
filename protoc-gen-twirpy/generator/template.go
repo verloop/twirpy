@@ -1,4 +1,4 @@
-package templates
+package generator
 
 import "text/template"
 
