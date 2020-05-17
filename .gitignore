@@ -117,3 +117,6 @@ venv.bak/
 *.out
 
 version.txt
+
+# generated Go binary
+protoc-gen-twirpy/protoc-gen-twirpy
