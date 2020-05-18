@@ -5,7 +5,7 @@ from google.protobuf import json_format
 from google.protobuf import symbol_database as _symbol_database
 
 
-from verloopcontext.context import Context
+from . import context
 
 from . import server
 from . import exceptions
@@ -22,8 +22,8 @@ class TwirpBaseApp(object):
         self._prefix = prefix
         self._services = {}
         if ctx_class is None:
-            ctx_class = Context
-        assert issubclass(ctx_class, Context)
+            ctx_class = context.Context
+        assert issubclass(ctx_class, context.Context)
         self._ctx_class = ctx_class
         self._middlewares = middlewares
         if hook is None:
