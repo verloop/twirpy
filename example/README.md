@@ -1,8 +1,9 @@
 ## Twirpy Examples
 
 ## Requirements
-You can install requirements for running the examples using `pip` :
-`pip install -r requirements.txt`
+You can install requirements for running the examples:
+- using `pip install -r requirements.txt`
+- using `pipenv install`
 
 ## Running server
 You can run the Twirpy ASGI application using servers such as uvicorn.  
