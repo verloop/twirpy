@@ -9,9 +9,11 @@ except:
     import json
 
 from . import base
-from . import exceptions
-from . import errors
 from . import ctxkeys
+from . import errors
+from . import exceptions
+
+
 
 try:
     import contextvars  # Python 3.7+ only.
@@ -57,7 +59,6 @@ class TwirpASGIApp(base.TwirpBaseApp):
             self._hook.request_received(ctx=ctx)
 
             endpoint = self._get_endpoint(scope['path'])
-            headers = {k.decode('utf-8'): v.decode('utf-8') for (k,v) in scope['headers']}
             encoder, decoder = self._get_encoder_decoder(endpoint, headers)
             # add headers from request into context
             
