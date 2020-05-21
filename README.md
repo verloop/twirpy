@@ -79,8 +79,12 @@ except TwirpServerException as e:
     print(e.code, e.message, e.meta, e.to_dict())
 ```
 
-
 ## Support and community
 Python: [#twirp](https://python-community.slack.com/messages/twirp). Join Python community slack [here](https://pythoncommunity.herokuapp.com)
 
 Go: [#twirp](https://gophers.slack.com/messages/twirp). Join Gophers community slack [here](https://invite.slack.golangbridge.org)
+
+## Standing on the shoulders of giants
+
+- The initial version of twirpy was made from an internal copy of https://github.com/daroot/protoc-gen-twirp_python_srv
+- The `run_in_threadpool` method comes from https://github.com/encode/starlette
