@@ -43,7 +43,7 @@ func GenerateTwirpFile(fd *descriptor.FileDescriptorProto) (*plugin.CodeGenerato
 
 	svcs := fd.GetService()
 	for _, svc := range svcs {
-		svcURL := fmt.Sprintf("%s.%s", fd.GetPackage(), svc.GetName())
+		svcURL := fmt.Sprintf("%s.%s", fd.GetPackage(), CamelCase(svc.GetName()))
 		twirpSvc := &TwirpService{
 			Name:       svc.GetName(),
 			ServiceURL: svcURL,
