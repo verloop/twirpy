@@ -1,6 +1,6 @@
 # Twirpy
 
-Python implementation of Twirp RPC framework.
+Python implementation of Twirp RPC framework (supports [Twirp Wire Protocol v7](https://twitchtv.github.io/twirp/docs/spec_v7.html)).
 
 This repo contains a protoc plugin that generates sever and client code and a pypi package with common implementation details.
 
@@ -51,6 +51,8 @@ class HaberdasherService(object):
         )
 
 
+# if you are using a custom prefix, then pass it as `server_path_prefix`
+# param to `HaberdasherServer` class.
 service = haberdasher_twirp.HaberdasherServer(service=HaberdasherService())
 app = TwirpASGIApp()
 app.add_service(service)
@@ -72,6 +74,8 @@ from . import haberdasher_twirp, haberdasher_pb2
 
 client = haberdasher_twirp.HaberdasherClient("http://localhost:3000")
 
+# if you are using a custom prefix, then pass it as `server_path_prefix`
+# param to `MakeHat` class.
 try:
     response = client.MakeHat(ctx=Context(), request=haberdasher_pb2.Size(inches=12))
     print(response)
