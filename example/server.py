@@ -16,6 +16,7 @@ class HaberdasherService(object):
         )
 
 
-service = haberdasher_twirp.HaberdasherServer(service=HaberdasherService())
+service = haberdasher_twirp.HaberdasherServer(
+	service=HaberdasherService(), server_path_prefix="/twirpy")
 app = TwirpASGIApp()
 app.add_service(service)
