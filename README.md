@@ -1,6 +1,6 @@
 # Twirpy
 
-Python implementation of Twirp RPC framework.
+Python implementation of Twirp RPC framework (supports [Twirp Wire Protocol v7](https://twitchtv.github.io/twirp/docs/spec_v7.html)).
 
 This repo contains a protoc plugin that generates sever and client code and a pypi package with common implementation details.
 
@@ -51,6 +51,8 @@ class HaberdasherService(object):
         )
 
 
+# if you are using a custom prefix, then pass it as `server_path_prefix`
+# param to `HaberdasherServer` class.
 service = haberdasher_twirp.HaberdasherServer(service=HaberdasherService())
 app = TwirpASGIApp()
 app.add_service(service)
@@ -72,12 +74,22 @@ from . import haberdasher_twirp, haberdasher_pb2
 
 client = haberdasher_twirp.HaberdasherClient("http://localhost:3000")
 
+# if you are using a custom prefix, then pass it as `server_path_prefix`
+# param to `MakeHat` class.
 try:
     response = client.MakeHat(ctx=Context(), request=haberdasher_pb2.Size(inches=12))
     print(response)
 except TwirpServerException as e:
     print(e.code, e.message, e.meta, e.to_dict())
 ```
+
+## Twirp Wire Protocol (v7)
+
+Twirpy generates the code based on the protocol v7. This is a breaking change from the previous v5 and you can see the changes [here](https://twitchtv.github.io/twirp/docs/spec_v7.html#differences-with-v5).
+
+This new version comes with flexibility to use any prefix for the server URLs and defaults to `/twirp`. To use an empty prefix or any custom prefix like `/my/custom/prefix`, pass it as a `server_path_prefix` param to server and clients. Check the example directory, which uses `/twirpy` as a custom prefix.
+
+If you want to use the server and clients of v5, then use the [0.0.1](https://github.com/verloop/twirpy/releases/tag/0.0.1) release.
 
 ## Support and community
 Python: [#twirp](https://python-community.slack.com/messages/twirp). Join Python community slack [here](https://pythoncommunity.herokuapp.com)
