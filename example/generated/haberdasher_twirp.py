@@ -12,9 +12,9 @@ _sym_db = _symbol_database.Default()
 
 class HaberdasherServer(TwirpServer):
 
-	def __init__(self, *args, service):
+	def __init__(self, *args, service, server_path_prefix="/twirp"):
 		super().__init__(service=service)
-		self._prefix = "/twirp/twitch.twirp.example.Haberdasher"
+		self._prefix = F"{server_path_prefix}/twitch.twirp.example.Haberdasher"
 		self._endpoints = {
 			"MakeHat": Endpoint(
 				service_name="Haberdasher",
@@ -27,9 +27,9 @@ class HaberdasherServer(TwirpServer):
 
 class HaberdasherClient(TwirpClient):
 
-	def MakeHat(self, *args, ctx, request, **kwargs):
+	def MakeHat(self, *args, ctx, request, server_path_prefix="/twirp", **kwargs):
 		return self._make_request(
-			url="/twirp/twitch.twirp.example.Haberdasher/MakeHat",
+			url=F"{server_path_prefix}/twitch.twirp.example.Haberdasher/MakeHat",
 			ctx=ctx,
 			request=request,
 			response_obj=_sym_db.GetSymbol("twitch.twirp.example.Hat"),
