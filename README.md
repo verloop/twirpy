@@ -89,6 +89,8 @@ Twirpy generates the code based on the protocol v7. This is a breaking change fr
 
 This new version comes with flexibility to use any prefix for the server URLs and defaults to `/twirp`. To use an empty prefix or any custom prefix like `/my/custom/prefix`, pass it as a `server_path_prefix` param to server and clients. Check the example directory, which uses `/twirpy` as a custom prefix.
 
+If you want to use the server and clients of v5, then use the [0.0.1](https://github.com/verloop/twirpy/releases/tag/0.0.1) release.
+
 ## Support and community
 Python: [#twirp](https://python-community.slack.com/messages/twirp). Join Python community slack [here](https://pythoncommunity.herokuapp.com)
 
