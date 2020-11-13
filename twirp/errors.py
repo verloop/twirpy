@@ -32,7 +32,7 @@ class Errors(Enum):
             Errors.AlreadyExists: 409,
             Errors.PermissionDenied: 403,
             Errors.Unauthenticated: 401,
-            Errors.ResourceExhausted: 403,
+            Errors.ResourceExhausted: 429,
             Errors.FailedPrecondition: 412,
             Errors.Aborted: 409,
             Errors.OutOfRange: 400,
