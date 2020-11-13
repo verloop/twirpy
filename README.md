@@ -83,6 +83,12 @@ except TwirpServerException as e:
     print(e.code, e.message, e.meta, e.to_dict())
 ```
 
+## Twirp Wire Protocol (v7)
+
+Twirpy generates the code based on the protocol v7. This is a breaking change from the previous v5 and you can see the changes [here](https://twitchtv.github.io/twirp/docs/spec_v7.html#differences-with-v5).
+
+This new version comes with flexibility to use any prefix for the server URLs and defaults to `/twirp`. To use an empty prefix or any custom prefix like `/my/custom/prefix`, pass it as a `server_path_prefix` param to server and clients. Check the example directory, which uses `/twirpy` as a custom prefix.
+
 ## Support and community
 Python: [#twirp](https://python-community.slack.com/messages/twirp). Join Python community slack [here](https://pythoncommunity.herokuapp.com)
 
