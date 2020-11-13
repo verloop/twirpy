@@ -43,9 +43,9 @@ _sym_db = _symbol_database.Default()
 {{range .Services}}
 class {{.Name}}Server(TwirpServer):
 
-	def __init__(self, *args, service):
+	def __init__(self, *args, service, server_path_prefix="/twirp"):
 		super().__init__(service=service)
-		self._prefix = "/twirp/{{.ServiceURL}}"
+		self._prefix = F"{server_path_prefix}/{{.ServiceURL}}"
 		self._endpoints = { {{- range .Methods }}
 			"{{.Name}}": Endpoint(
 				service_name="{{.ServiceName}}",
@@ -58,9 +58,9 @@ class {{.Name}}Server(TwirpServer):
 
 class {{.Name}}Client(TwirpClient):
 {{range .Methods}}
-	def {{.Name}}(self, *args, ctx, request, **kwargs):
+	def {{.Name}}(self, *args, ctx, request, server_path_prefix="/twirp", **kwargs):
 		return self._make_request(
-			url="/twirp/{{.ServiceURL}}/{{.Name}}",
+			url="F{server_path_prefix}/{{.ServiceURL}}/{{.Name}}",
 			ctx=ctx,
 			request=request,
 			response_obj=_sym_db.GetSymbol("{{.Output}}"),
