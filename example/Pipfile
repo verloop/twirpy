@@ -6,8 +6,8 @@ verify_ssl = true
 [dev-packages]
 
 [packages]
-twirp = "==0.0.1.dev03"
-uvicorn = "==0.11.7"
+twirp = "==0.0.2"
+uvicorn = "==0.12.2"
 
 [requires]
 python_version = "3.8"
