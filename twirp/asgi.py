@@ -59,14 +59,14 @@ class TwirpASGIApp(base.TwirpBaseApp):
             endpoint = self._get_endpoint(scope['path'])
             headers = {k.decode('utf-8'): v.decode('utf-8') for (k,v) in scope['headers']}
             encoder, decoder = self._get_encoder_decoder(endpoint, headers)
+
             # add headers from request into context
-            
             ctx.set(ctxkeys.SERVICE_NAME, endpoint.service_name)
             ctx.set(ctxkeys.METHOD_NAME, endpoint.name)
             ctx.set(ctxkeys.RESPONSE_STATUS, 200)
             self._hook.request_routed(ctx=ctx)
-            raw_receive = await receive()
-            request = decoder(raw_receive.get('body'))
+            raw_receive = await self._recv_all(receive)
+            request = decoder(raw_receive)
             response_data = await self._with_middlewares(func=endpoint.function, ctx=ctx, request=request)
             self._hook.response_prepared(ctx=ctx)
 
@@ -149,3 +149,12 @@ class TwirpASGIApp(base.TwirpBaseApp):
              'type': 'http.response.body',
              'body': body_bytes,
         })
+
+    async def _recv_all(self, receive):
+        body = b''
+        more_body = True
+        while more_body:
+            message = await receive()
+            body += message.get('body', b'')
+            more_body = message.get('more_body', False)
+        return body
