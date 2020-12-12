@@ -157,4 +157,13 @@ class TwirpASGIApp(base.TwirpBaseApp):
             message = await receive()
             body += message.get('body', b'')
             more_body = message.get('more_body', False)
+
+            # the body length exceeded than the size set, raise a valid exception
+            # so that proper error is returned to the client
+            if self._max_receive_message_length < len(body):
+                raise exceptions.TwirpServerException(
+                    code=errors.Errors.InvalidArgument,
+                    message=F"message body exceeds the specified length of {self._max_receive_message_length} bytes"
+                )
+
         return body
