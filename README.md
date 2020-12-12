@@ -91,6 +91,10 @@ This new version comes with flexibility to use any prefix for the server URLs an
 
 If you want to use the server and clients of v5, then use the [0.0.1](https://github.com/verloop/twirpy/releases/tag/0.0.1) release.
 
+### Message Body Length
+
+Currently, message body length limit is set to 100kb, you can override this by passing `max_receive_message_length` to the server constructor.
+
 ## Support and community
 Python: [#twirp](https://python-community.slack.com/messages/twirp). Join Python community slack [here](https://pythoncommunity.herokuapp.com)
 
