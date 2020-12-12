@@ -18,6 +18,7 @@ class Errors(Enum):
     Internal = "internal"
     Unavailable = "unavailable"
     DataLoss = "data_loss"
+    Malformed = "malformed"
     NoError = ""
 
     @staticmethod
@@ -26,6 +27,7 @@ class Errors(Enum):
             Errors.Canceled: 408,
             Errors.Unknown: 500,
             Errors.InvalidArgument: 400,
+            Errors.Malformed: 400,
             Errors.DeadlineExceeded: 408,
             Errors.NotFound: 404,
             Errors.BadRoute: 404,
