@@ -93,7 +93,13 @@ If you want to use the server and clients of v5, then use the [0.0.1](https://gi
 
 ### Message Body Length
 
-Currently, message body length limit is set to 100kb, you can override this by passing `max_receive_message_length` to the server constructor.
+Currently, message body length limit is set to 100kb, you can override this by passing `max_receive_message_length` to `TwirpASGIApp` constructor.
+
+```python
+# this sets max message length to be 10 bytes
+app = TwirpASGIApp(max_receive_message_length=10)
+
+```
 
 ## Support and community
 Python: [#twirp](https://python-community.slack.com/messages/twirp). Join Python community slack [here](https://pythoncommunity.herokuapp.com)
