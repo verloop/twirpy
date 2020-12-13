@@ -58,6 +58,7 @@ class TwirpASGIApp(base.TwirpBaseApp):
 
             endpoint = self._get_endpoint(scope['path'])
             headers = {k.decode('utf-8'): v.decode('utf-8') for (k,v) in scope['headers']}
+            self.validate_content_length(headers=headers)
             encoder, decoder = self._get_encoder_decoder(endpoint, headers)
 
             # add headers from request into context
@@ -157,4 +158,27 @@ class TwirpASGIApp(base.TwirpBaseApp):
             message = await receive()
             body += message.get('body', b'')
             more_body = message.get('more_body', False)
+
+            # the body length exceeded than the size set, raise a valid exception
+            # so that proper error is returned to the client
+            if self._max_receive_message_length < len(body):
+                raise exceptions.TwirpServerException(
+                    code=errors.Errors.InvalidArgument,
+                    message=F"message body exceeds the specified length of {self._max_receive_message_length} bytes"
+                )
+
         return body
+
+    # we will check content-length header value and make sure it is
+    # below the limit set
+    def validate_content_length(self, headers):
+        try:
+            content_length = int(headers.get('content-length'))
+        except (ValueError, TypeError):
+            return
+
+        if self._max_receive_message_length < content_length:
+            raise exceptions.TwirpServerException(
+                code=errors.Errors.InvalidArgument,
+                message=F"message body exceeds the specified length of {self._max_receive_message_length} bytes"
+            )

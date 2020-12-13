@@ -18,9 +18,10 @@ Endpoint = namedtuple("Endpoint", ["service_name", "name", "function", "input", 
 
 
 class TwirpBaseApp(object):
-    def __init__(self, *middlewares, hook=None, prefix="", ctx_class=None):
+    def __init__(self, *middlewares, hook=None, prefix="", max_receive_message_length=1024*100*100, ctx_class=None):
         self._prefix = prefix
         self._services = {}
+        self._max_receive_message_length = max_receive_message_length
         if ctx_class is None:
             ctx_class = context.Context
         assert issubclass(ctx_class, context.Context)
