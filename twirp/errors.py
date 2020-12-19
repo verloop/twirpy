@@ -20,10 +20,6 @@ class Errors(Enum):
     DataLoss = "data_loss"
     NoError = ""
 
-    @classmethod
-    def has_value(cls, value):
-        return value in cls._value2member_map_
-
     @staticmethod
     def get_status_code(code):
         return {

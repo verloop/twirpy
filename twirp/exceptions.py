@@ -15,11 +15,9 @@ from . import errors
 
 class TwirpServerException(httplib.HTTPException):
     def __init__(self, *args, code, message, meta={}):
-        if isinstance(code, errors.Errors):
-            self._code = code
-        if errors.Errors.has_value(code):
+        try:
             self._code = errors.Errors(code)
-        else:
+        except ValueError:
             self._code = errors.Errors.Unknown
         self._message = message
         self._meta = meta
