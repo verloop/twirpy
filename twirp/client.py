@@ -28,12 +28,12 @@ class TwirpClient(object):
         except requests.exceptions.Timeout as e:
             raise exceptions.TwirpServerException(
                 code=errors.Errors.DeadlineExceeded,
-                message=e.message,
+                message=str(e),
                 meta={"original_exception": e},
             )
         except requests.exceptions.ConnectionError as e:
             raise exceptions.TwirpServerException(
                 code=errors.Errors.Unavailable,
-                message=e.message,
+                message=str(e),
                 meta={"original_exception": e},
             )
