@@ -22,8 +22,14 @@ class TwirpClient(object):
                 response = response_obj()
                 response.ParseFromString(resp.content)
                 return response
-            else:
+            try:
                 raise exceptions.TwirpServerException.from_json(resp.json())
+            except:
+                if resp.status_code == 503:
+                    code = errors.Errors.Unavailable
+                else:
+                    code = errors.Errors.Unknown
+                raise exceptions.TwirpServerException(code=code, message=resp.text)
             # Todo: handle error
         except requests.exceptions.Timeout as e:
             raise exceptions.TwirpServerException(
