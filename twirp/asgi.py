@@ -72,6 +72,7 @@ class TwirpASGIApp(base.TwirpBaseApp):
             self._hook.response_prepared(ctx=ctx)
 
             body_bytes, headers = encoder(response_data)
+            headers = dict(ctx.get_response_headers(), **headers)
             # Todo: middleware
             await self._respond(
                 send=send,

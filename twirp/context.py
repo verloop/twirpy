@@ -19,6 +19,7 @@ class Context(object):
         if headers is None:
             headers = {}
         self._headers = headers
+        self._response_headers = {}
 
     def set(self, key, value):
         """Set a Context value
@@ -50,7 +51,7 @@ class Context(object):
         self._logger = logger
 
     def get_headers(self):
-        """Get headers that are currently stored."""
+        """Get request headers that are currently stored."""
         return self._headers
 
     def set_header(self, key, value):
@@ -61,3 +62,16 @@ class Context(object):
         value: Value for the header.
         """
         self._headers[key] = value
+
+    def get_response_headers(self):
+        """Get response headers that are currently stored."""
+        return self._response_headers
+
+    def set_response_header(self, key, value):
+        """Set a response header
+
+        Arguments:
+        key: Key for the header.
+        value: Value for the header.
+        """
+        self._response_headers[key] = value
