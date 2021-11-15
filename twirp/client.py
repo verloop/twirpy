@@ -30,7 +30,9 @@ class TwirpClient(object):
                     code = errors.Errors.Unavailable
                 else:
                     code = errors.Errors.Unknown
-                raise exceptions.TwirpServerException(code=code, message=resp.text)
+                raise exceptions.TwirpServerException(
+                    code=code, message=resp.text
+                ) from None
             # Todo: handle error
         except requests.exceptions.Timeout as e:
             raise exceptions.TwirpServerException(
