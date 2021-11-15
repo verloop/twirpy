@@ -1,3 +1,4 @@
+import json
 import requests
 
 from . import exceptions
@@ -24,7 +25,7 @@ class TwirpClient(object):
                 return response
             try:
                 raise exceptions.TwirpServerException.from_json(resp.json())
-            except:
+            except json.JSONDecodeError:
                 if resp.status_code == 503:
                     code = errors.Errors.Unavailable
                 else:
