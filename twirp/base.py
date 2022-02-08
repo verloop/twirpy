@@ -2,6 +2,7 @@ import functools
 from collections import namedtuple
 
 from google.protobuf import json_format
+from google.protobuf import message
 from google.protobuf import symbol_database as _symbol_database
 
 
@@ -48,7 +49,13 @@ class TwirpBaseApp(object):
     @staticmethod
     def json_decoder(body, data_obj=None):
         data = data_obj()
-        json_format.Parse(body, data)
+        try:
+            json_format.Parse(body, data)
+        except json_format.ParseError as exc:
+            raise exceptions.TwirpServerException(
+                code=errors.Errors.Malformed,
+                message="the json request could not be decoded",
+            ) from exc
         return data
 
     @staticmethod
@@ -64,7 +71,13 @@ class TwirpBaseApp(object):
     @staticmethod
     def proto_decoder(body, data_obj=None):
         data = data_obj()
-        data.ParseFromString(body)
+        try:
+            data.ParseFromString(body)
+        except message.DecodeError as exc:
+            raise exceptions.TwirpServerException(
+                code=errors.Errors.Malformed,
+                message="the protobuf request could not be decoded",
+            ) from exc
         return data
 
     @staticmethod
