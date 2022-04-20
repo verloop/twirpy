@@ -14,7 +14,7 @@ message Hat {
   string color = 2;
 
   // The name of a hat is it's type. Like, 'bowler', or something.
-  string name = 3;
+  optional string name = 3;
 }
 
 // Size is passed when requesting a new hat to be made. It's always
