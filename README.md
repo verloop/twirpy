@@ -102,7 +102,7 @@ app = TwirpASGIApp(max_receive_message_length=10)
 ```
 
 ## Support and community
-Python: [#twirp](https://python-community.slack.com/messages/twirp). Join Python community slack [here](https://pythoncommunity.herokuapp.com)
+Python: [#twirp](https://pythondev.slack.com/messages/twirp). Join PySlackers [here](https://pyslackers.com/web)
 
 Go: [#twirp](https://gophers.slack.com/messages/twirp). Join Gophers community slack [here](https://invite.slack.golangbridge.org)
 
