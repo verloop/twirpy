@@ -24,6 +24,10 @@ func Generate(r *plugin.CodeGeneratorRequest) *plugin.CodeGeneratorResponse {
 			return resp
 		}
 
+		if len(fd.GetService()) == 0 {
+			continue
+		}
+
 		twirpFile, err := GenerateTwirpFile(fd)
 		if err != nil {
 			resp.Error = proto.String("File[" + fileName + "][generate]: " + err.Error())
