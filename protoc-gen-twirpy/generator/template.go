@@ -38,6 +38,10 @@ from google.protobuf import symbol_database as _symbol_database
 from twirp.base import Endpoint
 from twirp.server import TwirpServer
 from twirp.client import TwirpClient
+try:
+	from twirp.async_clint import AsyncTwirpClient
+except ModuleNotFoundError:
+	AsyncTwirpClient = None
 
 _sym_db = _symbol_database.Default()
 {{range .Services}}
@@ -66,4 +70,18 @@ class {{.Name}}Client(TwirpClient):
 			response_obj=_sym_db.GetSymbol("{{.Output}}"),
 			**kwargs,
 		)
-{{end}}{{end}}`))
+{{end}}
+
+if AsyncTwirpClient:
+	class Async{{.Name}}Client(AsyncTwirpClient):
+	{{range .Methods}}
+		async def {{.Name}}(self, *args, ctx, request, server_path_prefix="/twirp", **kwargs):
+			return await self._make_request(
+				url=F"{server_path_prefix}/{{.ServiceURL}}/{{.Name}}",
+				ctx=ctx,
+				request=request,
+				response_obj=_sym_db.GetSymbol("{{.Output}}"),
+				**kwargs,
+			)
+	{{end}}
+{{end}}`))
