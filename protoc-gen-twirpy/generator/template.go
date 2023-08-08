@@ -39,9 +39,10 @@ from twirp.base import Endpoint
 from twirp.server import TwirpServer
 from twirp.client import TwirpClient
 try:
-	from twirp.async_clint import AsyncTwirpClient
+	from twirp.async_client import AsyncTwirpClient
+	_async_available = True
 except ModuleNotFoundError:
-	AsyncTwirpClient = None
+	_async_available = False
 
 _sym_db = _symbol_database.Default()
 {{range .Services}}
@@ -72,16 +73,16 @@ class {{.Name}}Client(TwirpClient):
 		)
 {{end}}
 
-if AsyncTwirpClient:
+if _async_available:
 	class Async{{.Name}}Client(AsyncTwirpClient):
-	{{range .Methods}}
-		async def {{.Name}}(self, *args, ctx, request, server_path_prefix="/twirp", **kwargs):
+{{range .Methods}}
+		async def {{.Name}}(self, *, ctx, request, server_path_prefix="/twirp", session=None, **kwargs):
 			return await self._make_request(
 				url=F"{server_path_prefix}/{{.ServiceURL}}/{{.Name}}",
 				ctx=ctx,
 				request=request,
 				response_obj=_sym_db.GetSymbol("{{.Output}}"),
+				session=session,
 				**kwargs,
 			)
-	{{end}}
-{{end}}`))
+{{end}}{{end}}`))
