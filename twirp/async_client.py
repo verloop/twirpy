@@ -5,6 +5,7 @@ import aiohttp
 from . import exceptions
 from . import errors
 
+
 class AsyncTwirpClient:
     def __init__(self, address, timeout=5, session=None):
         self._address = address
@@ -27,16 +28,19 @@ class AsyncTwirpClient:
     def session(self):
         if self._session is None:
             self._session = aiohttp.ClientSession(
-                self._address, timeout=aiohttp.ClientTimeout(total=self._timeout))
+                self._address, timeout=aiohttp.ClientTimeout(total=self._timeout)
+            )
             self._should_close_session = True
         return self._session
 
-    async def _make_request(self, *, url, ctx, request, response_obj, session=None, **kwargs):
+    async def _make_request(
+        self, *, url, ctx, request, response_obj, session=None, **kwargs
+    ):
         headers = ctx.get_headers()
-        if 'headers' in kwargs:
-            headers.update(kwargs['headers'])
-        kwargs['headers'] = headers
-        kwargs['headers']['Content-Type'] = 'application/protobuf'
+        if "headers" in kwargs:
+            headers.update(kwargs["headers"])
+        kwargs["headers"] = headers
+        kwargs["headers"]["Content-Type"] = "application/protobuf"
         try:
             async with await (session or self.session).post(
                 url=url, data=request.SerializeToString(), **kwargs
