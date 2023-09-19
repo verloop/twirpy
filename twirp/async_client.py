@@ -1,5 +1,7 @@
 import asyncio
 import json
+from typing import Optional
+
 import aiohttp
 
 from . import exceptions
@@ -7,31 +9,11 @@ from . import errors
 
 
 class AsyncTwirpClient:
-    def __init__(self, address, timeout=5, session=None):
+    def __init__(
+        self, address: str, session: Optional[aiohttp.ClientSession] = None
+    ) -> None:
         self._address = address
-        self._timeout = timeout
         self._session = session
-        self._should_close_session = False
-
-    def __del__(self):
-        if self._should_close_session:
-            try:
-                loop = asyncio.get_event_loop()
-                if loop.is_running():
-                    loop.create_task(self._session.close())
-                elif not loop.is_closed():
-                    loop.run_until_complete(self._session.close())
-            except RuntimeError:
-                pass
-
-    @property
-    def session(self):
-        if self._session is None:
-            self._session = aiohttp.ClientSession(
-                self._address, timeout=aiohttp.ClientTimeout(total=self._timeout)
-            )
-            self._should_close_session = True
-        return self._session
 
     async def _make_request(
         self, *, url, ctx, request, response_obj, session=None, **kwargs
@@ -41,8 +23,14 @@ class AsyncTwirpClient:
             headers.update(kwargs["headers"])
         kwargs["headers"] = headers
         kwargs["headers"]["Content-Type"] = "application/protobuf"
+
+        if session is None:
+            session = self._session
+        if not isinstance(session, aiohttp.ClientSession):
+            raise TypeError(f"invalid session type '{type(session).__name__}'")
+
         try:
-            async with await (session or self.session).post(
+            async with await session.post(
                 url=url, data=request.SerializeToString(), **kwargs
             ) as resp:
                 if resp.status == 200:
