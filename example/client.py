@@ -31,33 +31,13 @@ def main():
 
 
 async def async_main():
-    client = haberdasher_twirp.AsyncHaberdasherClient(server_url, timeout_s)
-
-    try:
-        response = await client.MakeHat(
-            ctx=Context(),
-            request=haberdasher_pb2.Size(inches=12),
-            server_path_prefix="/twirpy",
-        )
-        if not response.HasField("name"):
-            print("We didn't get a name!")
-        print(response)
-    except TwirpServerException as e:
-        print(e.code, e.message, e.meta, e.to_dict())
-
-
-async def async_with_session():
-    # It is optional but recommended to provide your own ClientSession to the twirp client
+    # The caller must provide their own ClientSession to the twirp client
     # either on init or per request, and ensure it is closed properly on app shutdown.
-    # Otherwise, the client will create its own session to use, which it will attempt to
-    # close in its __del__ method, but has no control over how or when that will get called.
 
     # NOTE: ClientSession may only be created (or closed) within a coroutine.
     session = aiohttp.ClientSession(
         server_url, timeout=aiohttp.ClientTimeout(total=timeout_s)
     )
-
-    # If session is provided, session controls the timeout. Timeout parameter to client init is unused
     client = haberdasher_twirp.AsyncHaberdasherClient(server_url, session=session)
 
     try:
