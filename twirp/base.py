@@ -101,6 +101,6 @@ class TwirpBaseApp(object):
         else:
             raise exceptions.TwirpServerException(
                 code=errors.Errors.BadRoute,
-                message="unexpected Content-Type: " + ctype
+                message="unexpected Content-Type: " + str(ctype)
             )
         return encoder, decoder

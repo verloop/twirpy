@@ -18,6 +18,9 @@ setup(name="twirp",
             'structlog',
             'protobuf'
       ],
+      extras_require={
+            'async': ['aiohttp'],
+      },
       test_requires=[
       ],
       zip_safe=False)

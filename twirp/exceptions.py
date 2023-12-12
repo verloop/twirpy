@@ -72,3 +72,42 @@ def RequiredArgument(*args, argument):
         argument=argument,
         error="is required"
     )
+
+
+def twirp_error_from_intermediary(status, reason, headers, body):
+    # see https://twitchtv.github.io/twirp/docs/errors.html#http-errors-from-intermediary-proxies
+    meta = {
+        'http_error_from_intermediary': 'true',
+        'status_code': str(status),
+    }
+
+    if 300 <= status < 400:
+        # twirp uses POST which should not redirect
+        code = errors.Errors.Internal
+        location = headers.get('location')
+        message = 'unexpected HTTP status code %d "%s" received, Location="%s"' % (
+            status,
+            reason,
+            location,
+        )
+        meta['location'] = location
+
+    else:
+        code = {
+            400: errors.Errors.Internal,  # JSON response should have been returned
+            401: errors.Errors.Unauthenticated,
+            403: errors.Errors.PermissionDenied,
+            404: errors.Errors.BadRoute,
+            429: errors.Errors.ResourceExhausted,
+            502: errors.Errors.Unavailable,
+            503: errors.Errors.Unavailable,
+            504: errors.Errors.Unavailable,
+        }.get(status, errors.Errors.Unknown)
+
+        message = 'Error from intermediary with HTTP status code %d "%s"' % (
+            status,
+            reason,
+        )
+        meta['body'] = body
+
+    return TwirpServerException(code=code, message=message, meta=meta)
