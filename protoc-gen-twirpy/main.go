@@ -7,7 +7,7 @@ import (
 
 	"github.com/golang/protobuf/proto"
 	plugin "github.com/golang/protobuf/protoc-gen-go/plugin"
-	"github.com/verloop/twirpy/protoc-gen-twirpy/generator"
+	"github.com/rami-lv/twirpy/protoc-gen-twirpy/generator"
 )
 
 func main() {
