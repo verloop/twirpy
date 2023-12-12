@@ -91,7 +91,7 @@ class TwirpBaseApp(object):
         return value.SerializeToString(), {"Content-Type": "application/protobuf"}
 
     def _get_encoder_decoder(self, endpoint, headers):
-        ctype = headers.get('content-type', None)
+        ctype = headers.get('content-type', '')
         if "application/json" == ctype:
             decoder = functools.partial(self.json_decoder, data_obj=endpoint.input)
             encoder = functools.partial(self.json_encoder, data_obj=endpoint.output)
