@@ -16,7 +16,7 @@ func loadProto(t *testing.T) *os.File {
 }
 
 func loadGenerated(t *testing.T) []byte {
-	file, err := os.Open("../example/generated/haberdasher_twirp.py")
+	file, err := os.Open("test_data/protoc_output.data")
 	require.NoError(t, err)
 	result, err := ioutil.ReadAll(file)
 	require.NoError(t, err)
@@ -39,6 +39,5 @@ func captureOutput(t *testing.T, f func()) []byte {
 func TestMain(t *testing.T) {
 	os.Stdin = loadProto(t)
 	result := captureOutput(t, main)
-	assert.Equal(t, "\x10\x01z\xc8\r\n\x14haberdasher_twirp.pyz\xaf\r", string(result[:30]))
-	assert.Equal(t, loadGenerated(t), result[30:]) // skip the first 30 bytes which are the header
+	assert.Equal(t, string(loadGenerated(t)), string(result))
 }
