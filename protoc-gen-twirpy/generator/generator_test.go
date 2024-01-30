@@ -117,10 +117,11 @@ func TestGeneratePyiTemplate(t *testing.T) {
 
 from typing import Protocol
 from twirp.server import TwirpServer
+from twirp.context import Context
 from twirp.twitch.example import haberdasher_pb2 as _haberdasher_pb2
 
 class HaberdasherServiceProtocol(Protocol):
-	def MakeHat(self, request: _haberdasher_pb2.Size) -> _haberdasher_pb2.Hat: ...
+	def MakeHat(self, ctx: Context, request: _haberdasher_pb2.Size) -> _haberdasher_pb2.Hat: ...
 
 class HaberdasherServer(TwirpServer):
 	def __init__(self, *args, service: DataPlatformServiceProtocol, server_path_prefix: str = "/twirp"): ...
@@ -163,10 +164,11 @@ class HaberdasherServer(TwirpServer):
 
 from typing import Protocol
 from twirp.server import TwirpServer
+from twirp.context import Context
 import haberdasher_pb2 as _haberdasher_pb2
 
 class HaberdasherServiceProtocol(Protocol):
-	def MakeHat(self, request: _haberdasher_pb2.Size) -> _haberdasher_pb2.Hat: ...
+	def MakeHat(self, ctx: Context, request: _haberdasher_pb2.Size) -> _haberdasher_pb2.Hat: ...
 
 class HaberdasherServer(TwirpServer):
 	def __init__(self, *args, service: DataPlatformServiceProtocol, server_path_prefix: str = "/twirp"): ...

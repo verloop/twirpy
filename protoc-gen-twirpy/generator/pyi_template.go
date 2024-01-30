@@ -9,6 +9,7 @@ var PyiTwirpTemplate = template.Must(template.New("PyiTwirpTemplate").Parse(`# -
 
 from typing import Protocol
 from twirp.server import TwirpServer
+from twirp.context import Context
 
 {{- range .Imports}}
 {{if .From}}from {{.From}} {{end}}import {{.Import}} as {{.Alias}}
@@ -16,7 +17,7 @@ from twirp.server import TwirpServer
 {{range .Services}}
 class {{.Name}}ServiceProtocol(Protocol):
 	{{- range .Methods }}
-	def {{.Name}}(self, request: {{.QualifiedInput}}) -> {{.QualifiedOutput}}: ...
+	def {{.Name}}(self, ctx: Context, request: {{.QualifiedInput}}) -> {{.QualifiedOutput}}: ...
 	{{- end }}
 
 class {{.Name}}Server(TwirpServer):
