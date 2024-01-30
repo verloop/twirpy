@@ -2,39 +2,33 @@ package generator
 
 import (
 	"bytes"
-	"errors"
 	"fmt"
 	"path"
 	"strings"
 
-	"github.com/golang/protobuf/protoc-gen-go/descriptor"
-	plugin "github.com/golang/protobuf/protoc-gen-go/plugin"
+    "github.com/pseudomuto/protokit"
+	plugin_go "github.com/golang/protobuf/protoc-gen-go/plugin"
 	"google.golang.org/protobuf/proto"
 )
 
-func Generate(r *plugin.CodeGeneratorRequest) *plugin.CodeGeneratorResponse {
-	resp := &plugin.CodeGeneratorResponse{}
-	resp.SupportedFeatures = proto.Uint64(uint64(plugin.CodeGeneratorResponse_FEATURE_PROTO3_OPTIONAL))
+type Plugin struct {}
 
-	files := r.GetFileToGenerate()
-	for _, fileName := range files {
-		fd, err := getFileDescriptor(r.GetProtoFile(), fileName)
-		if err != nil {
-			resp.Error = proto.String("File[" + fileName + "][descriptor]: " + err.Error())
-			return resp
-		}
+func (p *Plugin) Generate(r *plugin_go.CodeGeneratorRequest) (*plugin_go.CodeGeneratorResponse, error) {
+	resp := &plugin_go.CodeGeneratorResponse{}
+	resp.SupportedFeatures = proto.Uint64(uint64(plugin_go.CodeGeneratorResponse_FEATURE_PROTO3_OPTIONAL))
 
+	files := protokit.ParseCodeGenRequest(r)
+	for _, fd := range files {
 		twirpFile, err := GenerateTwirpFile(fd)
 		if err != nil {
-			resp.Error = proto.String("File[" + fileName + "][generate]: " + err.Error())
-			return resp
+			return nil, fmt.Errorf("File[" + fd.GetName() + "][generate]: " + err.Error())
 		}
 		resp.File = append(resp.File, twirpFile)
 	}
-	return resp
+	return resp, nil
 }
 
-func GenerateTwirpFile(fd *descriptor.FileDescriptorProto) (*plugin.CodeGeneratorResponse_File, error) {
+func GenerateTwirpFile(fd *protokit.FileDescriptor) (*plugin_go.CodeGeneratorResponse_File, error) {
 
 	name := fd.GetName()
 
@@ -42,7 +36,7 @@ func GenerateTwirpFile(fd *descriptor.FileDescriptorProto) (*plugin.CodeGenerato
 		FileName: name,
 	}
 
-	svcs := fd.GetService()
+	svcs := fd.GetServices()
 	for _, svc := range svcs {
 		svcURL := fmt.Sprintf("%s.%s", fd.GetPackage(), svc.GetName())
 		twirpSvc := &TwirpService{
@@ -50,7 +44,7 @@ func GenerateTwirpFile(fd *descriptor.FileDescriptorProto) (*plugin.CodeGenerato
 			ServiceURL: svcURL,
 		}
 
-		for _, method := range svc.GetMethod() {
+		for _, method := range svc.Methods {
 			twirpMethod := &TwirpMethod{
 				ServiceURL:  svcURL,
 				ServiceName: twirpSvc.Name,
@@ -70,7 +64,7 @@ func GenerateTwirpFile(fd *descriptor.FileDescriptorProto) (*plugin.CodeGenerato
 		return nil, err
 	}
 
-	resp := &plugin.CodeGeneratorResponse_File{
+	resp := &plugin_go.CodeGeneratorResponse_File{
 		Name:    proto.String(strings.TrimSuffix(name, path.Ext(name)) + "_twirp.py"),
 		Content: proto.String(buf.String()),
 	}
@@ -80,14 +74,4 @@ func GenerateTwirpFile(fd *descriptor.FileDescriptorProto) (*plugin.CodeGenerato
 
 func getSymbol(name string) string {
 	return strings.TrimPrefix(name, ".")
-}
-
-func getFileDescriptor(files []*descriptor.FileDescriptorProto, name string) (*descriptor.FileDescriptorProto, error) {
-	//Assumption: Number of files will not be large enough to justify making a map
-	for _, f := range files {
-		if f.GetName() == name {
-			return f, nil
-		}
-	}
-	return nil, errors.New("could not find descriptor")
 }
