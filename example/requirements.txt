@@ -1,2 +1,2 @@
-twirp==0.0.8
+twirp==0.1.0
 uvicorn==0.23.2
